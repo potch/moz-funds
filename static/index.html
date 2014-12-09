@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  <style>
+  * {
+    margin: 0;
+  }
+  body, html {
+    height: 100%;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+  body {
+    background-image: linear-gradient(to bottom, #FEE885, rgba(252, 222, 63, 0.5)), url(http://fundraising.mozilla.org/wp-content/themes/OneMozilla-child/img/MozillaCrowd_EOYVersion.png), linear-gradient(to bottom, #FEE885, #FCDE3F);
+    background-position: center, bottom, center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%, 100% auto, 100% 100%;
+
+    font-family: "Open Sans";
+  }
+  .hold {
+    position: absolute;
+    top: 5vmin;
+    left: 10vw;
+    width: 80vw;
+    text-align: center;
+  }
+  h1 {
+    font-size: 10vmin;
+    font-weight: 300;
+    margin-bottom: .5em;
+  }
+  h2 {
+    font-size: 5vmin;
+    font-weight: 300;
+    margin: .5em;
+  }
+  .amount {
+    display: inline-block;
+    border-radius: 1vmin;
+    background: #fff;
+    padding: 2vmin 4vmin;
+    font-size: 16vmin;
+    font-weight: 300;
+    line-height: 1em;
+    color: #888;
+  }
+  .amount .digit {
+    display: inline-block;
+    line-height: .9em;
+    width: 1.1ex;
+    color: #666;
+  }
+  </style>
+</head>
+<body>
+  <div class="hold">
+    <h1>End of Year Campaign</h1>
+    <h2>Since November 1, we've raised</h2>
+    <div class="amount" data-amount="1000000">$<small> USD</small></div>
+    <h2>of our $1.75M end of year campaign goal.</h2>
+  </div>
+  <script>
+    var initVal = 0;
+    var amtEl = document.querySelector('.amount');
+
+    function update() {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        try {
+          render(JSON.parse(xhr.response));
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      xhr.open('get', '/funds');
+      xhr.send();
+    }
+
+    var dEl = [];
+
+    function render(obj) {
+      var amount = obj.sum|0;
+      var digits = amount.toString(10).split('');
+      while (dEl.length < digits.length) {
+        var d = document.createElement('div');
+        d.className = 'digit';
+        if (dEl.length % 3 === 0 && dEl.length) {
+          amtEl.insertBefore(document.createTextNode(','), amtEl.childNodes[1]);
+        }
+        amtEl.insertBefore(d, amtEl.childNodes[1]);
+        dEl.unshift(d);
+      }
+      var start = Date.now();
+      function frame() {
+        var t = (Date.now() - start) / 2000;
+        var s = Math.sin(t * Math.PI / 2);
+        if (t > 1) {
+          s = 1;
+        }
+        var n = ('000000000000' + ((amount - initVal) * s + initVal | 0).toString()).substr(-digits.length);
+        for (var i=0; i<digits.length; i++) {
+          dEl[i].innerHTML = n[i];
+        }
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          initVal = amount;
+          setTimeout(update, 5000);
+        }
+      }
+      frame();
+    }
+
+    update();
+  </script>
+</body>
+</html>
