@@ -101,11 +101,11 @@
         if (t > 1) {
           s = 1;
         }
-        var n = ('000000000000' + ((amount - initVal) * s + initVal | 0).toString()).substr(-digits.length);
+        var n = ('000000000000' + Math.round((amount - initVal) * s + initVal).toString()).substr(-digits.length);
         for (var i=0; i<digits.length; i++) {
           dEl[i].innerHTML = n[i];
         }
-        if (t < 1) {
+        if (t <= 1) {
           requestAnimationFrame(frame);
         } else {
           initVal = amount;
