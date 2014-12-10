@@ -71,7 +71,7 @@
       var xhr = new XMLHttpRequest();
       xhr.onload = function () {
         try {
-          render(JSON.parse(xhr.response));
+          render(JSON.parse(xhr.response).sum|0);
         } catch (e) {
           console.error(e);
         }
@@ -82,9 +82,10 @@
 
     var dEl = [];
 
-    function render(obj) {
-      var amount = obj.sum|0;
+    function render(amount) {
+      localStorage.setItem('last-val', amount);
       var digits = amount.toString(10).split('');
+
       while (dEl.length < digits.length) {
         var d = document.createElement('div');
         d.className = 'digit';
@@ -115,6 +116,8 @@
       frame();
     }
 
+    var lastVal = parseInt(localStorage.getItem('last-val'), 10) || 0;
+    render(lastVal);
     update();
   </script>
 </body>
