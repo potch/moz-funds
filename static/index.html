@@ -7,6 +7,7 @@
   <style>
   * {
     margin: 0;
+    box-sizing: border-box;
   }
   body, html {
     height: 100%;
@@ -14,29 +15,32 @@
     margin: 0;
   }
   body {
-    background-image: linear-gradient(to bottom, #FEE885, rgba(252, 222, 63, 0.5)), url(http://fundraising.mozilla.org/wp-content/themes/OneMozilla-child/img/MozillaCrowd_EOYVersion.png), linear-gradient(to bottom, #FEE885, #FCDE3F);
-    background-position: center, bottom, center;
+    background: #f89c26;
+    background-image: url(https://fundraising.mozilla.org/wp-content/themes/OneMozilla-child/img/heart.svg);
+    background-size: cover;
     background-repeat: no-repeat;
-    background-size: 100% 100%, 100% auto, 100% 100%;
-
+    background-position: center;
     font-family: "Open Sans";
   }
   .hold {
-    position: absolute;
-    top: 5vmin;
-    left: 10vw;
-    width: 80vw;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding-bottom: 10vh;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
   h1 {
-    font-size: 10vmin;
+    font-size: 8vw;
+    color: #fff;
+    text-shadow: 0 2px 0 rgba(255,255,255,.75);
     font-weight: 300;
     margin-bottom: .5em;
-  }
-  h2 {
-    font-size: 5vmin;
-    font-weight: 300;
-    margin: .5em;
   }
   .amount {
     display: inline-block;
@@ -54,14 +58,19 @@
     width: 1.1ex;
     color: #666;
   }
+  .dapper-fox {
+    position: absolute;
+    bottom: 0;
+    right: 15vw;
+    width: 25vw;
+  }
   </style>
 </head>
 <body>
   <div class="hold">
     <h1>End of Year Campaign</h1>
-    <h2>Since November 1, we've raised</h2>
     <div class="amount" data-amount="1000000">$<small> USD</small></div>
-    <h2>of our $1.75M end of year campaign goal.</h2>
+    <img class="dapper-fox" src="https://fundraising.mozilla.org/wp-content/themes/OneMozilla-child/img/dapper-fox.svg">
   </div>
   <script>
     var initVal = 0;
